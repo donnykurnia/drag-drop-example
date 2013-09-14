@@ -5,3 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+#initial tab
+(1..3).each do |c|
+  Tab.where(name: "Tab #{c}").first_or_create
+end
+
+#initial post
+(1..10).each do |c|
+  Post.where(title: "Post #{c}").first_or_create(content: 'Lorem ipsum dolor...')
+end
