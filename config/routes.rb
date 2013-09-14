@@ -1,6 +1,8 @@
 DragDropExample::Application.routes.draw do
 
-  resources :tabs
+  resources :tabs do
+    put 'receive_post', :on => :member
+  end
   resources :posts
 
   root :to => 'tabs#index'

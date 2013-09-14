@@ -3,6 +3,7 @@ class TabsController < ApplicationController
   # GET /tabs.json
   def index
     @tabs = Tab.all
+    @posts = Post.untabbed
 
     respond_to do |format|
       format.html # index.html.erb
@@ -65,6 +66,19 @@ class TabsController < ApplicationController
       else
         format.html { render action: "edit" }
         format.json { render json: @tab.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def receive_post
+    @tab = Tab.find(params[:id])
+    @post = Post.find(params[:post_id])
+
+    respond_to do |format|
+      if @post.update_attributes(tab: @tab)
+        format.js # receive_post.js.erb
+      else
+        format.js { render :js => "alert('Failed to receive post.');" }
       end
     end
   end
