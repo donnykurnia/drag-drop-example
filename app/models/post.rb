@@ -3,6 +3,6 @@ class Post < ActiveRecord::Base
   belongs_to :tab
 
   # scope
-  scope :untabbed, -> { where(tab_id: nil) }
+  scope :untabbed, Proc.new { where(tab_id: nil) }
 
 end
