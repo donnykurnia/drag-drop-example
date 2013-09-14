@@ -1,4 +1,12 @@
 DragDropExample::Application.routes.draw do
+
+  resources :tabs do
+    put 'receive_post', :on => :member
+  end
+  resources :posts
+
+  root :to => 'tabs#index'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

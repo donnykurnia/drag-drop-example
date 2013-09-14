@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row">
+    <div class="span4">
+      <!--Sidebar content-->
+      <ul class="thumbnails" id="tabs">
+        <%= render @tabs %>
+      </ul>
+    </div>
+    <div class="span8">
+      <!--Body content-->
+      <ul class="thumbnails" id="posts">
+        <%= render @posts %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  jQuery(function($) {
+    // there's the posts and the tabs
+    var $posts = $( "#posts" ),
+      $tabs = $( "#tabs" );
+
+    // let the posts items be draggable
+    $( "li", $posts ).draggable({
+      revert: "invalid", // when not dropped, the item will revert back to its initial position
+      containment: "document",
+      helper: "clone",
+      cursor: "move"
+    });
+
+    // let the tabs be droppable, accepting the posts items
+    $( "li", $tabs ).droppable({
+      accept: "#posts > li",
+      activeClass: "ui-state-hover",
+      drop: function( event, ui ) {
+        var tab_id = $(this).data('id');
+        var $post = ui.draggable;
+        var post_id = $post.data('id');
+        var csrf_token = $('meta[name=csrf-token]').attr('content');
+        var csrf_param = $('meta[name=csrf-param]').attr('content');
+        $('form input[name="' + csrf_param + '"]').val(csrf_token);
+        // ajax call
+        $.ajax({
+          url: $(this).data('receive-post-url'),
+          type: 'PUT',
+          data: {'post_id': post_id}
+        });
+      }
+    });
+
+  });
+</script>
